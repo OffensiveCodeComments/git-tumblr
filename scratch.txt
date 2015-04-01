@@ -23,6 +23,11 @@ git tumblr pull <remote-name>
 git tumblr push <remote-name> <refspec>
 	Synchronizes the given branch with the given tumblog.
 
+git tumblr move <source-file> <destination-file>
+	Performs a file move, then looks up source-file in the index and changes its path.
+	When moving a post around in the repository file structure, use this command.
+	Also remember to update any relative filepaths in @photo, @audio, or @video directives.
+
 
 
 ###########################################################
@@ -32,6 +37,34 @@ git tumblr push <remote-name> <refspec>
 3507845453 1298665620  "My Post File.md"
 -          1298665620  "My Pending Post.md"
 # Posts that have not been synced yet have a dash for the ID. Unfortunately, this means that syncing new posts will result in a new Git commit.
+
+
+###########################################################
+# Git-Tumblr Fetch Locations File
+###########################################################
+Optionally, users may place a text file called git-tumblr-locations at the repository root.
+It determines where objects will be placed when new objects are downloaded from a remote.
+Each line begins with the object type - audio, video, photo, or post.
+Following this is the post state - published, draft, queue, or private. To cover multiple states, separate by commas or use the wildcard *.
+For posts, the next column is the post type. Again, one may separate by commas or use the wildcard character.
+Finally, the path to the folder relative to the repository root.
+
+TODO: Details for inferring post state from the location of files, and for automatically moving files when changed by fetch.
+
+An example git-tumblr-locations:
+
+photo	*								img/
+audio	*								media/
+video	*								media/
+post	draft				*			drafts/
+post	queue				*			queue/
+post	private,published	video		published/video
+post	private,published	audio		published/audio
+post	private,published	photo		published/photo
+post	private,published	text		published/text
+post	private,published	quote		published/quote
+post	private,published	link		published/link
+post	private,published	chat		published/chat
 
 
 
