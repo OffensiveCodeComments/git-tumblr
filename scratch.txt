@@ -1,0 +1,68 @@
+###########################################################
+# Git-Tumblr Subcommands
+###########################################################
+git tumblr index [<filename>...]
+	Adds file(s) to the post index.
+	If no files are specified, adds all staged files to the index.
+
+git tumblr add <filename> [<filename>...]
+	Performs `git tumblr index` and then a `git add` of the corresponding files.
+
+git tumblr remote add <remote-name> <base-hostname> <oauth-token>
+git tumblr remote remove <remote-name>
+git tumblr remote set-hostname <remote-name> <base-hostname>
+git tumblr remote set-token <remote-name> <oauth-token>
+	Add, remove, and modify tumblogs to sync with.
+
+git tumblr fetch <remote-name>
+	Pull down changes from a tumblog and merge with the current working copy.
+
+git tumblr pull <remote-name>
+	Performs `git tumblr fetch` and, if there are no merge conflicts, `git commit`.
+
+git tumblr push <remote-name> <refspec>
+	Synchronizes the given branch with the given tumblog.
+
+
+
+###########################################################
+# Git-Tumblr Posts Index File Format
+###########################################################
+# id       timestamp   filepath
+3507845453 1298665620  "My Post File.md"
+-          1298665620  "My Pending Post.md"
+# Posts that have not been synced yet have a dash for the ID. Unfortunately, this means that syncing new posts will result in a new Git commit.
+
+
+
+###########################################################
+# Git-Tumblr Directives (Metadata Language)
+###########################################################
+
+<!-- @type text -->
+<!-- @type link http://www.example.com/full-link-URL -->
+
+<!-- @state published -->
+
+<!-- @title Spaces Before and after the text are ignored   -->
+
+<!-- @slug my-post-slug -->
+
+<!-- @tweet Tweet text if you have autotweet enabled. -->
+
+<!-- @tags you, can have, multiple -->
+<!-- @tags instances of the tag element -->
+<!-- @tags or, you, can repeat tags -->
+
+<!-- @photo http://www.example.com/path/to/my/photo.jpg http://www.example.com/optional/click-through/url -->
+<!-- @photo relative/photo/path.jpg http://www.example.com/optional/click-through/url -->
+
+<!-- @photo_layout 112 -->
+
+<!-- @audio http://www.example.com/path/to/my/audio.mp3 -->
+<!-- @audio my_audio_file.mp3 -->
+
+<!-- @video http://www.example.com/path/to/my/video.mp3 -->
+<!-- @video my_video_file.mp3 -->
+
+<!-- @quote Lorem ipsum dolor sit amet. -->
