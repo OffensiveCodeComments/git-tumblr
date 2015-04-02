@@ -67,6 +67,29 @@ post	private,published	link		published/link
 post	private,published	chat		published/chat
 
 
+###########################################################
+# Operations and Internal Model
+###########################################################
+Treats post collection as hierarchy - first level is post state, second level is post type.
+	e.g. published/text
+	git-tumblr-locations file maps each location to a directory
+	resources (photos, audio and video clips) are in similar hierarchy,
+	  but are only operated on as corresponding post is operated on
+
+All sync operations take place in 3 stages:
+1) Existence sync, which compares the list of posts by ID, and performs CREATE and DELETE operations.
+	configuration options can determine behaviors such as whether associated resources are deleted when a post is deleted.
+2) Location sync, which compares state and type of the posts, and performs MOVE operations.
+	note that a MOVE operation might also require an EDIT operation, to change the @type or @state directives
+	associated resources will generally be moved as well
+	if a resource is used by multiple posts, it may be duplicated or simply not moved, depending on configuration
+3) Content sync, which compares post contents and metadata, and performs EDIT operations.
+	editing of photo, video, and audio posts will create or delete resources
+	so again there are configuration options to determine behavior in the case of resource deletion
+
+Things get complicated when you consider all the edge cases here - since this is a small utility
+that realistically nobody else is likely to use, perhaps I should simply have a fixed hierarchical
+layout and only have default options - albeit design with extendability in mind.
 
 ###########################################################
 # Git-Tumblr Directives (Metadata Language)
