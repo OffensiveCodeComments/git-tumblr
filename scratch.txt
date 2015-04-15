@@ -122,3 +122,25 @@ layout and only have default options - albeit design with extendability in mind.
 <!-- @video my_video_file.mp3 -->
 
 <!-- @quote Lorem ipsum dolor sit amet. -->
+
+
+###########################################################
+# Internal API Design
+###########################################################
+
+enum PostState = { "published", "queued", "draft", "private" }
+enum PostType = { "text", "quote", "link", "answer", "video", "audio", "photo", "chat" }
+
+enum PostAttribute = state, type, title, slug, autotweet, ...
+
+interface PostStore:
+	get_ids() -> int[]
+	get_posts() -> Post[]
+
+interface Post:
+	get_id() -> int
+	get_attribute(PostAttribute) -> Attribute
+
+interface AttributeEditor:
+	compute_delta(Attribute source, Attribute destination) -> AttributeDelta
+	apply_delta(Attribute target, AttributeDelta change) -> boolean
